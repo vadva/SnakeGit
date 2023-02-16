@@ -34,12 +34,13 @@ import java.util.*;
  */
 public class YourSolver implements Solver<Board> {
 
-//    private Board board;
+    //    private Board board;
     private Node graph[][];
 
     Node headTail;
     Node destination;
-//
+
+    //
     public Node getHeadTail() {
         return headTail;
     }
@@ -104,7 +105,7 @@ public class YourSolver implements Solver<Board> {
             System.out.println();
             for (int x = 1; x < board.size() - 1; x++) {
                 if (graph[x][y] != null) {
-                    System.out.format("[%2d,%2d] %2d ", graph[x][y].point.getX(),graph[x][y].point.getY(),graph[x][y].getPeekValue());
+                    System.out.format("[%2d,%2d] %2d ", graph[x][y].point.getX(), graph[x][y].point.getY(), graph[x][y].getPeekValue());
                 } else {
                     System.out.print("[null]     ");
                 }
@@ -116,7 +117,10 @@ public class YourSolver implements Solver<Board> {
     private Node[][] createGraph(Board board) {
         for (int x = 1; x < board.size(); x++) {
             for (int y = 1; y < board.size(); y++) {
-                if (board.isAt(x, y, Elements.NONE, Elements.GOOD_APPLE,Elements.BAD_APPLE, Elements.HEAD_RIGHT, Elements.HEAD_UP, Elements.HEAD_LEFT, Elements.HEAD_DOWN)) {
+                Elements pointChangeApple = board.getSnake().size() > 55? Elements.BAD_APPLE : Elements.GOOD_APPLE;
+                if (board.isAt(x, y, Elements.NONE, pointChangeApple,Elements.GOOD_APPLE,
+                 Elements.HEAD_RIGHT, Elements.HEAD_UP, Elements.HEAD_LEFT, Elements.HEAD_DOWN))
+                {
                     graph[x][y] = new Node(new PointImpl(x, y));
                     if (graph[x - 1][y] != null) {
                         graph[x - 1][y].neighbors.put(Direction.RIGHT, graph[x][y]);
@@ -184,16 +188,17 @@ public class YourSolver implements Solver<Board> {
 
         return priorityWay;
     }
-    private Direction doSolve(Board board){
+
+    private Direction doSolve(Board board) {
 
         this.graph = new Node[board.size()][board.size()];
         createGraph(board);
 
         this.headTail = graph[board.getHead().getX()][board.getHead().getY()];
 
-        if(board.getSnake().size()>35){
-            this.destination=graph[board.getStones().get(0).getX()][board.getStones().get(0).getY()];
-        }else this.destination= graph[board.getApples().get(0).getX()][board.getApples().get(0).getY()];
+        if (board.getSnake().size() > 55) {
+            this.destination = graph[board.getStones().get(0).getX()][board.getStones().get(0).getY()];
+        } else this.destination = graph[board.getApples().get(0).getX()][board.getApples().get(0).getY()];
 
         setAllPeekValue(this.destination, 0);
 
@@ -201,6 +206,7 @@ public class YourSolver implements Solver<Board> {
 
         return findWay(board);
     }
+
     @Override
     public String get(Board board) {
         long l = System.currentTimeMillis();
@@ -215,8 +221,6 @@ public class YourSolver implements Solver<Board> {
                 "http://206.81.21.158/codenjoy-contest/board/player/0fxrbriv3uq1our076hk?code=1806689756399325773",
                 new YourSolver(),
                 new Board());
-
-
 
     }
 }
