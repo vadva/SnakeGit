@@ -117,7 +117,7 @@ public class YourSolver implements Solver<Board> {
     private Node[][] createGraph(Board board) {
         for (int x = 1; x < board.size(); x++) {
             for (int y = 1; y < board.size(); y++) {
-                Elements pointChangeApple = board.getSnake().size() > 55? Elements.BAD_APPLE : Elements.GOOD_APPLE;
+                Elements pointChangeApple = board.getSnake().size() > 53? Elements.BAD_APPLE : Elements.GOOD_APPLE;
                 if (board.isAt(x, y, Elements.NONE, pointChangeApple,Elements.GOOD_APPLE,
                  Elements.HEAD_RIGHT, Elements.HEAD_UP, Elements.HEAD_LEFT, Elements.HEAD_DOWN))
                 {
@@ -196,7 +196,7 @@ public class YourSolver implements Solver<Board> {
 
         this.headTail = graph[board.getHead().getX()][board.getHead().getY()];
 
-        if (board.getSnake().size() > 55) {
+        if (board.getSnake().size() > 53) {
             this.destination = graph[board.getStones().get(0).getX()][board.getStones().get(0).getY()];
         } else this.destination = graph[board.getApples().get(0).getX()][board.getApples().get(0).getY()];
 
